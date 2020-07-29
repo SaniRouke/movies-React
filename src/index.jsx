@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
+// import defaultData from "./services/default-data";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+const apiKey = "e3cafce94e3a863833765608b4d85428";
+
+ReactDOM.render(<App apiKey={apiKey} />, document.getElementById("root"));

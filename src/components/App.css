@@ -1,0 +1,74 @@
+#root {
+  background-color: #e5e5e5;
+}
+
+.App {
+  width: 1010px;
+  margin: 0 auto;
+}
+section.Layout {
+  background-color: white;
+}
+.Content {
+  margin: 35px;
+}
+
+.MoviesList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px 35px;
+  margin: 0;
+  padding: 0;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* justify-content: space-between; */
+}
+
+.li-MovieItem {
+  list-style: none;
+  /* width: 454px; */
+  /* height: 185px; */
+  /* margin-bottom: 35px; */
+}
+
+.MovieItem {
+  display: flex;
+  height: 100%;
+}
+.MovieItem img {
+  width: 185px;
+}
+.MovieItem__header {
+  display: flex;
+}
+.MovieItem h3 {
+  line-height: 1em;
+  margin-right: 30px;
+}
+.MovieItem__rate-circle {
+  align-self: flex-start;
+  position: absolute;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  border: 2px solid #e9d100;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding-bottom: 3px;
+}
+ul.MovieItem__rate-stars {
+  font-size: 15px;
+  position: absolute;
+  bottom: 0;
+  margin: 15px 0;
+}
+.MovieItem div.MovieItem__overview {
+  margin: 10px 0 30px;
+  font-size: 12px;
+  line-height: 22px;
+  color: #000000;
+}
