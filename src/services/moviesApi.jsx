@@ -11,11 +11,12 @@ class MoviesApi {
     );
     return await response.json();
   }
-  async getSearchList(sessionID, query = "gekis", page = 1) {
+  async getSearchList(sessionID, query = "a", page = 1) {
     const sessionIDFiled = sessionID ? `&seisson_id=${sessionID}` : "";
+    const queryFiled = query !== "" ? query : "a";
     console.log("ID in API:", sessionID, sessionIDFiled);
     const response = await fetch(
-      `${this.baseUrl}/search/movie?api_key=${this.apiKey}${sessionIDFiled}&query=${query}&page=${page}`
+      `${this.baseUrl}/search/movie?api_key=${this.apiKey}${sessionIDFiled}&query=${queryFiled}&page=${page}`
     );
     return await response.json();
   }

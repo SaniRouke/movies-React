@@ -3,6 +3,7 @@ import "./App.css";
 import "antd/dist/antd.css";
 import moviesApi from "../services/moviesApi";
 import { Layout } from "antd";
+import Search from "./Search";
 import MoviesList from "./MoviesList";
 import MovieItem from "./MovieItem";
 
@@ -15,18 +16,23 @@ function App() {
     async function asyncFunc() {
       const session = await moviesApi.createGuestSession();
       setSessionID(session.guest_session_id);
-      const list = await moviesApi.getSearchList(sessionID);
-      setData(list.results);
+      loadData();
     }
     asyncFunc();
   }, []);
 
+  async function loadData(query) {
+    const list = await moviesApi.getSearchList(sessionID, query);
+    setData(list.results);
+  }
+
   const { Content } = Layout;
-  console.log(data);
+  console.log("render");
   return (
     <div className="App">
       <Layout className="Layout">
         <Content className="Content">
+          <Search loadData={loadData} />
           <MoviesList className="MoviesList">
             {data.map((movie) => (
               <li className="li-MovieItem" key={movie.id}>

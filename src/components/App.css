@@ -12,7 +12,9 @@ section.Layout {
 .Content {
   margin: 35px;
 }
-
+input.Search {
+  margin: 20px 0 30px;
+}
 .MoviesList {
   display: grid;
   grid-template-columns: 1fr 1fr;
