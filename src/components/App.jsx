@@ -10,20 +10,29 @@ import MovieItem from "./MovieItem";
 function App() {
   const [sessionID, setSessionID] = useState("");
   const [data, setData] = useState([]);
+  const [currentPage, setStatePage] = useState(1);
 
   useEffect(() => {
-    console.log("useEffect1");
+    console.log("useEffect init");
     async function asyncFunc() {
       const session = await moviesApi.createGuestSession();
-      setSessionID(session.guest_session_id);
-      loadData();
+      await setSessionID(session.guest_session_id);
     }
     asyncFunc();
   }, []);
 
+  useEffect(() => {
+    console.log("useEffect Page");
+    loadData();
+  }, [currentPage]);
+
   async function loadData(query) {
-    const list = await moviesApi.getSearchList(sessionID, query);
+    const list = await moviesApi.getSearchList(sessionID, query, currentPage);
     setData(list.results);
+  }
+
+  function setPage(page) {
+    setStatePage(page);
   }
 
   const { Content } = Layout;
@@ -33,7 +42,11 @@ function App() {
       <Layout className="Layout">
         <Content className="Content">
           <Search loadData={loadData} />
-          <MoviesList className="MoviesList">
+          <MoviesList
+            className="MoviesList"
+            currentPage={currentPage}
+            setPage={setPage}
+          >
             {data.map((movie) => (
               <li className="li-MovieItem" key={movie.id}>
                 <MovieItem className="MovieItem" data={movie} />
