@@ -7,7 +7,7 @@ export default function Search({ loadData, disabled }) {
   const handleSearchValue = (event) => {
     setsearchValue(event.target.value);
   };
-  const deb = debounce(loadData, 1000);
+  const deb = debounce(loadData, 400);
   return (
     <Input
       className="Search"

@@ -37,7 +37,6 @@ input.Search {
 
 .MovieItem img {
   width: 185px;
-  min-height: 280px;
 }
 
 .MovieItem__header {
