@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "antd/dist/antd.css";
-import MoviesApi from "../services/moviesApi";
+import moviesApi from "../services/moviesApi";
 import { Layout } from "antd";
 import MoviesList from "./MoviesList";
 import MovieItem from "./MovieItem";
 
-function App({ apiKey }) {
+function App() {
   const [sessionID, setSessionID] = useState("");
   const [data, setData] = useState([]);
 
-  const moviesApi = new MoviesApi(apiKey);
-
   useEffect(() => {
-    console.log("useEffect");
+    console.log("useEffect1");
     async function asyncFunc() {
-      await moviesApi
-        .createGuestSession()
-        .then((res) => setSessionID(res.guest_session_id));
-      moviesApi.getSearchList(sessionID).then((res) => setData(res.results));
+      const session = await moviesApi.createGuestSession();
+      setSessionID(session.guest_session_id);
+      const list = await moviesApi.getSearchList(sessionID);
+      setData(list.results);
     }
     asyncFunc();
   }, []);
 
   const { Content } = Layout;
+  console.log(data);
   return (
     <div className="App">
       <Layout className="Layout">

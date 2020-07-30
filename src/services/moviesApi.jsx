@@ -1,9 +1,8 @@
-export default class MoviesApi {
-  constructor(apiKey) {
-    this.apiKey = apiKey;
+class MoviesApi {
+  constructor() {
+    this.apiKey = "e3cafce94e3a863833765608b4d85428";
     this.baseUrl = "https://api.themoviedb.org/3";
-    this.imageUrl =
-      "https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg";
+    this.imageBaseUrl = "https://image.tmdb.org/t/p";
   }
 
   async createGuestSession() {
@@ -14,9 +13,16 @@ export default class MoviesApi {
   }
   async getSearchList(sessionID, query = "gekis", page = 1) {
     const sessionIDFiled = sessionID ? `&seisson_id=${sessionID}` : "";
+    console.log("ID in API:", sessionID, sessionIDFiled);
     const response = await fetch(
       `${this.baseUrl}/search/movie?api_key=${this.apiKey}${sessionIDFiled}&query=${query}&page=${page}`
     );
     return await response.json();
   }
+  getImagePath(width, path) {
+    const errorImg =
+      "https://avatanplus.com/files/resources/original/57b1a0f710a0b1568ddcc51c.jpg";
+    return path !== null ? `${this.imageBaseUrl}/w${width}${path}` : errorImg;
+  }
 }
+export default new MoviesApi();

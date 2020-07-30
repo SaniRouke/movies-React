@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
+import moviesApi from "../services/moviesApi";
 import { Card, Tag, Typography, Rate } from "antd";
 
 export default function MovieItem({ className, data }) {
@@ -7,10 +8,10 @@ export default function MovieItem({ className, data }) {
 
   const {
     title,
+    poster_path: posterPath,
     release_date: releaseDate,
     overview,
     vote_average: voteAverage,
-    ...rest
   } = data;
   const { Paragraph } = Typography;
 
@@ -29,15 +30,11 @@ export default function MovieItem({ className, data }) {
     }
   }, [voteAverage]);
   const img = (
-    <img
-      src={`https://image.tmdb.org/t/p/w185${data.poster_path}`}
-      alt={data.title}
-    />
+    <img src={moviesApi.getImagePath(185, posterPath)} alt={data.title} />
   );
   const date = releaseDate
     ? format(new Date(releaseDate), "MMMM d, yyyy")
     : "-/-/-";
-  // console.log(rest);
   return (
     <Card
       className={className}
