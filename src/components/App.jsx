@@ -39,7 +39,12 @@ function App() {
     <div className="App">
       <Layout className="Layout">
         <Content className="Content">
-          <Tabs size="large" centered={true} onTabClick={(key) => setSort(key)}>
+          <Tabs
+            className="Tabs"
+            size="large"
+            centered={true}
+            onTabClick={(key) => setSort(key)}
+          >
             <TabPane tab="Search" key="search" />
             <TabPane tab="Rated" key="rated" />
           </Tabs>
