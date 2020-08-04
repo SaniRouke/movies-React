@@ -1,14 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import { debounce } from "lodash";
-import { Input } from "antd";
+import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
+import { Input } from 'antd';
 
 export default function Search({ loadData, disabled }) {
-  const [searchValue, setsearchValue] = useState("");
-  const input = useRef(null)
+  const [searchValue, setsearchValue] = useState('');
+  const input = useRef(null);
 
   useEffect(() => {
-    input.current.focus()
-  })
+    input.current.focus();
+  });
 
   const handleSearchValue = (event) => {
     setsearchValue(event.target.value);
@@ -28,3 +29,7 @@ export default function Search({ loadData, disabled }) {
     />
   );
 }
+Search.propTypes = {
+  loadData: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+};
