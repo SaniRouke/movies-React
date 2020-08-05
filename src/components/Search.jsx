@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import { Input } from 'antd';
@@ -14,8 +14,9 @@ export default function Search({ fetchData, disabled }) {
   const handleSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
-
-  const deb = debounce(fetchData, 400);
+  // eslint-disable-next-line
+  const deb = useMemo(() => debounce(fetchData, 400), [fetchData]);
+  deb();
   return (
     <Input
       className="Search"
