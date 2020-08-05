@@ -14,9 +14,7 @@ export default function Search({ fetchData, disabled }) {
   const handleSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
-  // eslint-disable-next-line
   const deb = useMemo(() => debounce(fetchData, 400), [fetchData]);
-  deb();
   return (
     <Input
       className="Search"

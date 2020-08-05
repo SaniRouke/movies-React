@@ -17,9 +17,12 @@ export default function MoviesList({ error, children, className, currentPage, se
     </>
   );
 }
+MoviesList.defaultProps = {
+  error: null,
+};
 
 MoviesList.propTypes = {
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.any]).isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
   children: PropTypes.arrayOf(PropTypes.element).isRequired,
   className: PropTypes.string.isRequired,
   currentPage: PropTypes.number.isRequired,
