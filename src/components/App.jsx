@@ -7,7 +7,7 @@ import Search from './Search';
 import MoviesList from './MoviesList';
 import MovieItem from './MovieItem';
 
-function App() {
+export default function App() {
   const [loading, setLoading] = useState(true);
   const [sessionID, setSessionID] = useState(null);
   const [sort, setSort] = useState('search');
@@ -47,23 +47,25 @@ function App() {
 
   const { Content } = Layout;
   const { TabPane } = Tabs;
+  const list = data.map((movie) => (
+    <li className="li-MovieItem" key={movie.id}>
+      <MovieItem className="MovieItem" data={movie} />
+    </li>
+  ));
+
   console.log('render');
   return (
     <div className="App">
       <Layout className="Layout">
         <Content className="Content">
-          <Tabs className="Tabs" size="large" centered onTabClick={(key) => setSort(key)}>
+          <Tabs className="Tabs" size="large" centered onTabClick={setSort}>
             <TabPane tab="Search" key="search" />
             <TabPane tab="Rated" key="rated" />
           </Tabs>
           <Search loadData={loadData} disabled={sort === 'rated'} />
           <Spin spinning={loading} size="large">
-            <MoviesList className="MoviesList" currentPage={currentPage} setPage={(page) => setPage(page)}>
-              {data.map((movie) => (
-                <li className="li-MovieItem" key={movie.id}>
-                  <MovieItem className="MovieItem" data={movie} />
-                </li>
-              ))}
+            <MoviesList className="MoviesList" currentPage={currentPage} setPage={setPage}>
+              {list}
             </MoviesList>
           </Spin>
         </Content>
@@ -71,5 +73,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

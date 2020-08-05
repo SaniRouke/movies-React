@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import { Input } from 'antd';
 
 export default function Search({ loadData, disabled }) {
-  const [searchValue, setsearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   const input = useRef(null);
 
   useEffect(() => {
@@ -12,8 +12,9 @@ export default function Search({ loadData, disabled }) {
   });
 
   const handleSearchValue = (event) => {
-    setsearchValue(event.target.value);
+    setSearchValue(event.target.value);
   };
+
   const deb = debounce(loadData, 400);
   return (
     <Input
@@ -29,6 +30,7 @@ export default function Search({ loadData, disabled }) {
     />
   );
 }
+
 Search.propTypes = {
   loadData: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,

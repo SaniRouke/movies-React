@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pagination } from 'antd';
+import { Pagination, Alert } from 'antd';
 
 export default function MoviesList({ children, className, currentPage, setPage }) {
+  const alert = <Alert type="info" message="Movies not Found" style={{ paddingLeft: 50, fontSize: 30 }} />;
+  const isDataEmpty = React.Children.count(children) > 0;
   return (
     <>
-      <ul className={className}>{children}</ul>
+      {isDataEmpty ? <ul className={className}>{children}</ul> : alert}
       <Pagination className="Pagination" size="small" total={50} current={currentPage} onChange={setPage} />
     </>
   );
