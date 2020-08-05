@@ -12,17 +12,19 @@ export default function App() {
   const [sessionID, setSessionID] = useState(null);
   const [sort, setSort] = useState('search');
   const [data, setData] = useState([]);
+  const [stateError, setError] = useState(null);
   const [currentPage, setPage] = useState(1);
 
-  function loadData(query) {
+  function fetchData(query) {
     setLoading(true);
     Promise.resolve()
       .then(() => {
         return moviesApi.getSearchList(sessionID, query, currentPage);
       })
-      .then(({ results }) => {
+      .then(({ error, results }) => {
         setLoading(false);
         setData(results);
+        setError(error);
         return results;
       });
   }
@@ -40,7 +42,7 @@ export default function App() {
 
   useEffect(() => {
     console.log('useEffect Page');
-    loadData();
+    fetchData();
     window.scrollTo(0, 0);
     // eslint-disable-next-line
   }, [currentPage, sort]);
@@ -62,9 +64,9 @@ export default function App() {
             <TabPane tab="Search" key="search" />
             <TabPane tab="Rated" key="rated" />
           </Tabs>
-          <Search loadData={loadData} disabled={sort === 'rated'} />
+          <Search fetchData={fetchData} disabled={sort === 'rated'} />
           <Spin spinning={loading} size="large">
-            <MoviesList className="MoviesList" currentPage={currentPage} setPage={setPage}>
+            <MoviesList className="MoviesList" error={stateError} currentPage={currentPage} setPage={setPage}>
               {list}
             </MoviesList>
           </Spin>

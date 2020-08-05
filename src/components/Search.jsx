@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import { Input } from 'antd';
 
-export default function Search({ loadData, disabled }) {
+export default function Search({ fetchData, disabled }) {
   const [searchValue, setSearchValue] = useState('');
   const input = useRef(null);
 
@@ -15,7 +15,7 @@ export default function Search({ loadData, disabled }) {
     setSearchValue(event.target.value);
   };
 
-  const deb = debounce(loadData, 400);
+  const deb = debounce(fetchData, 400);
   return (
     <Input
       className="Search"
@@ -32,6 +32,6 @@ export default function Search({ loadData, disabled }) {
 }
 
 Search.propTypes = {
-  loadData: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
 };

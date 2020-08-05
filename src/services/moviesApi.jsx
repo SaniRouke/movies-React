@@ -14,9 +14,17 @@ class MoviesApi {
     const sessionIDFiled = sessionID ? `&seisson_id=${sessionID}` : '';
     const queryFiled = query !== '' ? query : 'a';
     console.log('ID in API:', sessionID, sessionIDFiled);
-    const response = await fetch(
-      `${this.baseUrl}/search/movie?api_key=${this.apiKey}${sessionIDFiled}&query=${queryFiled}&page=${page}`
-    );
+    let response;
+    try {
+      response = await fetch(
+        `${this.baseUrl}/search/movie?api_key=${this.apiKey}${sessionIDFiled}&query=${queryFiled}&page=${page}`
+      );
+    } catch (error) {
+      return {
+        error,
+        results: [],
+      };
+    }
     return response.json();
   }
 
