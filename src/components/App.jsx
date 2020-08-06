@@ -14,6 +14,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [stateError, setError] = useState(null);
   const [currentPage, setPage] = useState(1);
+  const genres = useGenres();
 
   function fetchData(query) {
     setLoading(true);
@@ -50,9 +51,10 @@ export default function App() {
 
   const { Content } = Layout;
   const { TabPane } = Tabs;
+
   const list = data.map((movie) => (
     <li className="li-MovieItem" key={movie.id}>
-      <MovieItem className="MovieItem" data={movie} sessionID={sessionID} />
+      <MovieItem className="MovieItem" data={movie} sessionID={sessionID} genres={genres} />
     </li>
   ));
 
@@ -75,4 +77,31 @@ export default function App() {
       </Layout>
     </div>
   );
+}
+
+function useGenres() {
+  const [genres, setGenres] = useState([]);
+
+  useEffect(() => {
+    Promise.resolve()
+      .then(() => {
+        return moviesApi.getGenres();
+      })
+      .then((genresList) => {
+        setGenres(genresList.genres);
+      });
+  }, []);
+
+  let genresNames = [];
+  for (const item in genres) {
+    if (Object.prototype.hasOwnProperty.call(genres, item)) {
+      const [...rest] = genresNames;
+      genresNames = [...rest, genres[item]];
+    }
+  }
+  const genresList = genresNames.reduce((acc, ...item) => {
+    return { ...acc, [item[0].id]: item[0].name };
+  }, {});
+
+  return genresList;
 }

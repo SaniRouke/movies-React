@@ -4,11 +4,19 @@ import { Card, Tag, Typography, Rate } from 'antd';
 import { format } from 'date-fns';
 import moviesApi from '../services/moviesApi';
 
-export default function MovieItem({ className, data, sessionID }) {
+export default function MovieItem({ className, data, sessionID, genres }) {
   const [rate, setRate] = useState();
   const [rateColor, setRateColor] = useState('black');
 
-  const { id, title, poster_path: posterPath, release_date: releaseDate, overview, vote_average: voteAverage } = data;
+  const {
+    id,
+    title,
+    poster_path: posterPath,
+    release_date: releaseDate,
+    overview,
+    vote_average: voteAverage,
+    genre_ids: genreIds,
+  } = data;
   const { Paragraph } = Typography;
 
   useEffect(() => {
@@ -28,9 +36,14 @@ export default function MovieItem({ className, data, sessionID }) {
 
   const img = <img src={moviesApi.getImagePath(185, posterPath)} alt={data.title} />;
   const date = releaseDate ? format(new Date(releaseDate), 'MMMM d, yyyy') : '-/-/-';
+  const genresList = genreIds.map((genresId) => (
+    <Tag className="MovieItem__tag" key={genresId}>
+      {genres[genresId]}
+    </Tag>
+  ));
 
   return (
-    <Card className={className} cover={img} bodyStyle={{ padding: '10px 20px' }} bordered={false}>
+    <Card className={className} cover={img} bodyStyle={{ padding: '10px 20px 40px' }} bordered={false}>
       <div className="MovieItem__header">
         <h3 className="MovieItem__title">{title}</h3>
         <div className="MovieItem__rate-circle" style={{ borderColor: rateColor }}>
@@ -38,10 +51,7 @@ export default function MovieItem({ className, data, sessionID }) {
         </div>
       </div>
       <p className="MovieItem__date">{date}</p>
-      <div className="MovieItem__tag-wrapper">
-        <Tag className="MovieItem__tag">Action</Tag>
-        <Tag className="MovieItem__tag">Drama</Tag>
-      </div>
+      <div className="MovieItem__tag-wrapper">{genres && genreIds ? genresList : null}</div>
       <Paragraph className="MovieItem__overview" ellipsis={{ rows: 5, expandable: true, symbol: 'more' }}>
         {overview}
       </Paragraph>
@@ -59,9 +69,12 @@ export default function MovieItem({ className, data, sessionID }) {
     </Card>
   );
 }
+
 MovieItem.defaultProps = {
   sessionID: null,
+  genres: null,
 };
+
 MovieItem.propTypes = {
   className: PropTypes.string.isRequired,
   data: PropTypes.shape({
@@ -71,6 +84,8 @@ MovieItem.propTypes = {
     release_date: PropTypes.string,
     overview: PropTypes.string,
     vote_average: PropTypes.number,
+    genre_ids: PropTypes.arrayOf(PropTypes.number),
   }).isRequired,
   sessionID: PropTypes.string,
+  genres: PropTypes.objectOf(PropTypes.string),
 };

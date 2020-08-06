@@ -46,6 +46,9 @@ input.Search {
   line-height: 1em;
   margin-right: 30px;
 }
+.MovieItem__tag {
+  margin-bottom: 5px;
+}
 .MovieItem__rate-circle {
   align-self: flex-start;
   position: absolute;
@@ -68,7 +71,7 @@ ul.MovieItem__rate-stars {
   margin: 15px 0;
 }
 .MovieItem div.MovieItem__overview {
-  margin: 10px 0 30px;
+  margin: 5px 0 0;
   font-size: 12px;
   line-height: 22px;
   color: #000000;

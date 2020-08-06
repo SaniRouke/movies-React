@@ -68,6 +68,11 @@ class MoviesApi {
     }
     return response.json();
   }
+
+  async getGenres() {
+    const response = await fetch(`${this.baseUrl}/genre/movie/list?api_key=${this.apiKey}&language=en-US`);
+    return response.json();
+  }
 }
 
 export default new MoviesApi();
