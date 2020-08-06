@@ -19,6 +19,7 @@ export default function App() {
     setLoading(true);
     Promise.resolve()
       .then(() => {
+        if (sort === 'rated') return moviesApi.getRatedListGuestSession(sessionID);
         return moviesApi.getSearchList(sessionID, query, currentPage);
       })
       .then(({ error, results }) => {
@@ -51,7 +52,7 @@ export default function App() {
   const { TabPane } = Tabs;
   const list = data.map((movie) => (
     <li className="li-MovieItem" key={movie.id}>
-      <MovieItem className="MovieItem" data={movie} />
+      <MovieItem className="MovieItem" data={movie} sessionID={sessionID} />
     </li>
   ));
 

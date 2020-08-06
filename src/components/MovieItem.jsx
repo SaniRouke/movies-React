@@ -4,10 +4,11 @@ import { Card, Tag, Typography, Rate } from 'antd';
 import { format } from 'date-fns';
 import moviesApi from '../services/moviesApi';
 
-export default function MovieItem({ className, data }) {
+export default function MovieItem({ className, data, sessionID }) {
+  const [rate, setRate] = useState();
   const [rateColor, setRateColor] = useState('black');
 
-  const { title, poster_path: posterPath, release_date: releaseDate, overview, vote_average: voteAverage } = data;
+  const { id, title, poster_path: posterPath, release_date: releaseDate, overview, vote_average: voteAverage } = data;
   const { Paragraph } = Typography;
 
   useEffect(() => {
@@ -42,7 +43,17 @@ export default function MovieItem({ className, data }) {
       <Paragraph className="MovieItem__overview" ellipsis={{ rows: 5, expandable: true, symbol: 'more' }}>
         {overview}
       </Paragraph>
-      <Rate className="MovieItem__rate-stars" count={10} value={voteAverage} allowHalf />
+      <Rate
+        className="MovieItem__rate-stars"
+        count={10}
+        defaultValue={0}
+        value={rate}
+        onChange={(rateNumber) => {
+          setRate(rateNumber);
+          moviesApi.rateMovie(sessionID, id);
+        }}
+        allowHalf
+      />
     </Card>
   );
 }
@@ -50,10 +61,12 @@ export default function MovieItem({ className, data }) {
 MovieItem.propTypes = {
   className: PropTypes.string.isRequired,
   data: PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     poster_path: PropTypes.string,
     release_date: PropTypes.string,
     overview: PropTypes.string,
     vote_average: PropTypes.number,
   }).isRequired,
+  sessionID: PropTypes.string.isRequired,
 };

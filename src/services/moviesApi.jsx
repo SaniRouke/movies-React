@@ -25,12 +25,40 @@ class MoviesApi {
         results: [],
       };
     }
+
     return response.json();
   }
 
   getImagePath(width, path) {
     const errorImg = 'https://avatanplus.com/files/resources/original/57b1a0f710a0b1568ddcc51c.jpg';
+
     return path !== null ? `${this.imageBaseUrl}/w${width}${path}` : errorImg;
+  }
+
+  async rateMovie(guestSessionID, movieID) {
+    const response = await fetch(
+      `${this.baseUrl}/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionID}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        doby: {
+          value: 8.5,
+        },
+      }
+    );
+    console.log('ID in API:', guestSessionID, movieID);
+
+    return response.json();
+  }
+
+  async getRatedListGuestSession(guestSessionID) {
+    const response = await fetch(`
+    ${this.baseUrl}/guest_session/${guestSessionID}/rated/movies?api_key=${this.apiKey}&language=en-US&sort_by=created_at.asc`);
+    console.log('ID in API:', guestSessionID);
+
+    return response.json();
   }
 }
 
