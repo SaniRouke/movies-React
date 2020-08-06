@@ -35,9 +35,9 @@ class MoviesApi {
     return path !== null ? `${this.imageBaseUrl}/w${width}${path}` : errorImg;
   }
 
-  async rateMovie(guestSessionID, movieID) {
+  async rateMovie(guestSessionID, movieID, rateNumber) {
     const body = {
-      value: 8.5,
+      value: rateNumber,
     };
     const response = await fetch(
       `${this.baseUrl}/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionID}`,

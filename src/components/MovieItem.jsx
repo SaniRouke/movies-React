@@ -25,8 +25,10 @@ export default function MovieItem({ className, data, sessionID }) {
       setRateColor('#66E900');
     }
   }, [voteAverage]);
+
   const img = <img src={moviesApi.getImagePath(185, posterPath)} alt={data.title} />;
   const date = releaseDate ? format(new Date(releaseDate), 'MMMM d, yyyy') : '-/-/-';
+
   return (
     <Card className={className} cover={img} bodyStyle={{ padding: '10px 20px' }} bordered={false}>
       <div className="MovieItem__header">
@@ -50,7 +52,7 @@ export default function MovieItem({ className, data, sessionID }) {
         value={rate}
         onChange={(rateNumber) => {
           setRate(rateNumber);
-          moviesApi.rateMovie(sessionID, id);
+          moviesApi.rateMovie(sessionID, id, rateNumber);
         }}
         allowHalf
       />
