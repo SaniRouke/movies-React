@@ -59,7 +59,9 @@ export default function MovieItem({ className, data, sessionID }) {
     </Card>
   );
 }
-
+MovieItem.defaultProps = {
+  sessionID: null,
+};
 MovieItem.propTypes = {
   className: PropTypes.string.isRequired,
   data: PropTypes.shape({
@@ -70,5 +72,5 @@ MovieItem.propTypes = {
     overview: PropTypes.string,
     vote_average: PropTypes.number,
   }).isRequired,
-  sessionID: PropTypes.string.isRequired,
+  sessionID: PropTypes.string,
 };
