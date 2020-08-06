@@ -36,6 +36,9 @@ class MoviesApi {
   }
 
   async rateMovie(guestSessionID, movieID) {
+    const body = {
+      value: 8.5,
+    };
     const response = await fetch(
       `${this.baseUrl}/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionID}`,
       {
@@ -43,9 +46,7 @@ class MoviesApi {
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
         },
-        doby: {
-          value: 8.5,
-        },
+        body: JSON.stringify(body),
       }
     );
     console.log('ID in API:', guestSessionID, movieID);
@@ -54,10 +55,17 @@ class MoviesApi {
   }
 
   async getRatedListGuestSession(guestSessionID) {
-    const response = await fetch(`
-    ${this.baseUrl}/guest_session/${guestSessionID}/rated/movies?api_key=${this.apiKey}&language=en-US&sort_by=created_at.asc`);
+    let response;
     console.log('ID in API:', guestSessionID);
-
+    try {
+      response = await fetch(`
+    ${this.baseUrl}/guest_session/${guestSessionID}/rated/movies?api_key=${this.apiKey}&language=en-US&sort_by=created_at.asc`);
+    } catch (error) {
+      return {
+        error,
+        results: [],
+      };
+    }
     return response.json();
   }
 }
