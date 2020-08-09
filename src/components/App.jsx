@@ -40,17 +40,23 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    console.log('useEffect init');
+    // console.log('useEffect init');
     Promise.resolve(moviesApi.createGuestSession()).then((session) => {
       setSessionID(session.guest_session_id);
     });
   }, []);
 
   useEffect(() => {
-    console.log('useEffect Page');
+    // console.log('useEffect Page');
     cbFetchData();
     window.scrollTo(0, 0);
   }, [currentPage, sort, cbFetchData]);
+
+  useEffect(() => {
+    // обновляет ещё раз страницу, в итоге 3 запроса за раз, заметно
+    // console.log('useEffect Change Value');
+    setPage(1);
+  }, [searchValue]);
 
   const { Content } = Layout;
   const { TabPane } = Tabs;
@@ -90,7 +96,7 @@ function useGenres() {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    console.log('useGENRES');
+    // console.log('useGENRES');
     Promise.resolve(moviesApi.getGenres()).then((genresList) => {
       setGenres(genresList.genres);
     });
