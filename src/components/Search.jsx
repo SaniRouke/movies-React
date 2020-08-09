@@ -11,10 +11,14 @@ export default function Search({ fetchData, disabled }) {
     input.current.focus();
   });
 
+  const debFetchData = useMemo(() => debounce(fetchData, 400), [fetchData]);
+
   const handleSearchValue = (event) => {
-    setSearchValue(event.target.value);
+    const { value } = event.target;
+    setSearchValue(value);
+    debFetchData(value);
   };
-  const deb = useMemo(() => debounce(fetchData, 400), [fetchData]);
+
   return (
     <Input
       className="Search"
@@ -22,10 +26,7 @@ export default function Search({ fetchData, disabled }) {
       placeholder="Type to search..."
       disabled={disabled}
       value={searchValue}
-      onChange={(event) => {
-        handleSearchValue(event);
-        deb(event.target.value);
-      }}
+      onChange={handleSearchValue}
     />
   );
 }

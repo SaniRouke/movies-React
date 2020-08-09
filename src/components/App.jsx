@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Layout, Tabs, Spin } from 'antd';
 import 'antd/dist/antd.css';
 import './App.css';
@@ -15,39 +15,42 @@ export default function App() {
   const [stateError, setError] = useState(null);
   const [currentPage, setPage] = useState(1);
   const genres = useGenres();
+  const [searchValue, setSearchValue] = useState('');
 
-  function fetchData(query) {
+  const fetchData = (session, query, pageNumber, sortType = 'search') => {
     setLoading(true);
-    Promise.resolve()
-      .then(() => {
-        if (sort === 'rated') return moviesApi.getRatedListGuestSession(sessionID);
-        return moviesApi.getSearchList(sessionID, query, currentPage);
-      })
-      .then(({ error, results }) => {
-        setLoading(false);
-        setData(results);
-        setError(error);
-        return results;
-      });
-  }
+    setSearchValue(query);
+    Promise.resolve(
+      sortType === 'rated'
+        ? moviesApi.getRatedListGuestSession(session)
+        : moviesApi.getSearchList(session, query, pageNumber)
+    ).then(({ error, results }) => {
+      setLoading(false);
+      setData(results);
+      setError(error);
+      return results;
+    });
+  };
+
+  const cbFetchData = useCallback(() => fetchData(sessionID, searchValue, currentPage, sort), [
+    sessionID,
+    searchValue,
+    currentPage,
+    sort,
+  ]);
 
   useEffect(() => {
     console.log('useEffect init');
-    Promise.resolve()
-      .then(() => {
-        return moviesApi.createGuestSession();
-      })
-      .then((session) => {
-        setSessionID(session.guest_session_id);
-      });
+    Promise.resolve(moviesApi.createGuestSession()).then((session) => {
+      setSessionID(session.guest_session_id);
+    });
   }, []);
 
   useEffect(() => {
     console.log('useEffect Page');
-    fetchData();
+    cbFetchData();
     window.scrollTo(0, 0);
-    // eslint-disable-next-line
-  }, [currentPage, sort]);
+  }, [currentPage, sort, cbFetchData]);
 
   const { Content } = Layout;
   const { TabPane } = Tabs;
@@ -58,7 +61,6 @@ export default function App() {
     </li>
   ));
 
-  console.log('render');
   return (
     <div className="App">
       <Layout className="Layout">
@@ -67,7 +69,12 @@ export default function App() {
             <TabPane tab="Search" key="search" />
             <TabPane tab="Rated" key="rated" />
           </Tabs>
-          <Search fetchData={fetchData} disabled={sort === 'rated'} />
+          <Search
+            fetchData={(query) => {
+              return fetchData(sessionID, query, currentPage);
+            }}
+            disabled={sort === 'rated'}
+          />
           <Spin spinning={loading} size="large">
             <MoviesList className="MoviesList" error={stateError} currentPage={currentPage} setPage={setPage}>
               {list}
@@ -83,13 +90,10 @@ function useGenres() {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    Promise.resolve()
-      .then(() => {
-        return moviesApi.getGenres();
-      })
-      .then((genresList) => {
-        setGenres(genresList.genres);
-      });
+    console.log('useGENRES');
+    Promise.resolve(moviesApi.getGenres()).then((genresList) => {
+      setGenres(genresList.genres);
+    });
   }, []);
 
   let genresNames = [];
