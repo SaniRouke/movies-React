@@ -13,7 +13,7 @@ class MoviesApi {
   async getSearchList(sessionID, query = 'a', page = 1) {
     const sessionIDFiled = sessionID ? `&seisson_id=${sessionID}` : '';
     const queryFiled = query !== '' ? query : 'a';
-    console.log('ID in API:', sessionID, sessionIDFiled);
+    // console.log('ID in API:', sessionID, query);
     let response;
     try {
       response = await fetch(
@@ -30,7 +30,7 @@ class MoviesApi {
   }
 
   getImagePath(width, path) {
-    const errorImg = 'https://avatanplus.com/files/resources/original/57b1a0f710a0b1568ddcc51c.jpg';
+    const errorImg = 'https://raw.githubusercontent.com/SaniRouke/Images/master/not-found.png';
 
     return path !== null ? `${this.imageBaseUrl}/w${width}${path}` : errorImg;
   }
@@ -49,14 +49,14 @@ class MoviesApi {
         body: JSON.stringify(body),
       }
     );
-    console.log('ID in API:', guestSessionID, movieID);
+    // console.log('ID in API:', guestSessionID, movieID);
 
     return response.json();
   }
 
   async getRatedListGuestSession(guestSessionID) {
     let response;
-    console.log('ID in API:', guestSessionID);
+    // console.log('ID in API:', guestSessionID);
     try {
       response = await fetch(`
     ${this.baseUrl}/guest_session/${guestSessionID}/rated/movies?api_key=${this.apiKey}&language=en-US&sort_by=created_at.asc`);
